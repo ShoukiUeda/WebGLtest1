@@ -16,6 +16,7 @@
 
         // レンダラーを作成
         var renderer = new THREE.WebGLRenderer();
+        renderer.shadowMap.enabled = true;
         document.body.appendChild(renderer.domElement);
         renderer.setSize(width, height);
 
@@ -31,15 +32,30 @@
         const controls = new THREE.OrbitControls(camera, document.body); 
         
         // 平行光源1
+        
         var directionalLight1 = new THREE.DirectionalLight(0xffffff);
         directionalLight1.position.set(10, 10, 10);
+        directionalLight1.castSlhadow = true;
         // シーンに追加
         scene.add(directionalLight1);
+
+        //スポットライト
+        var light = new THREE.SpotLight(0xffffff, 1, 30, Math.PI / 6, 0, 0.5);
+        light.position.set(1,8,10);
+        light.castShadow = true;
+        light.shadow.mapSize.widh = 2048;
+        light.shadow.mapSize.height = 2048;
+        scene.add(light);
+
+        //ライトヘルパー
+        var lightHelper = new THREE.SpotLightHelper(light);
+       // scene.add(lightHelper);
+
         // 平行光源2
-        var directionalLight2 = new THREE.DirectionalLight(0x888888);
-        directionalLight2.position.set(-10, -10, 10);
+        //var directionalLight2 = new THREE.DirectionalLight(0x888888);
+        //directionalLight2.position.set(-10, -10, 10);
         // シーンに追加
-        scene.add(directionalLight2);
+        //scene.add(directionalLight2);
 
         // helper
         const gridHelper = new THREE.GridHelper(2,10); // size, step
@@ -48,23 +64,25 @@
         scene.add(axisHelper);
 
         // 平面を作成
-        var planeGeometry = new THREE.PlaneGeometry(5,5,10,10); //縦、横、分割数、分割数
-        var planeMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
+        var planeGeometry = new THREE.BoxGeometry(2000, 0.1,2000); //縦、横、分割数、分割数
+        var planeMaterial = new THREE.MeshStandardMaterial();
         var plane = new THREE.Mesh(planeGeometry,planeMaterial);
-        plane.rotation.set( -Math.PI/2, 0, 0 );
-        plane.position.set(0,0,0);
+        plane.receiveShadow = true ;
+       // plane.rotation.set( -Math.PI/2, 0, 0 );
+       // plane.position.set(0,0,0);
         scene.add(plane);
 
-        // 頭を作成
+        /* 頭を作成
         var head_g = new THREE.SphereGeometry( 0.5, 32, 32 );
         var material_b = new THREE.MeshPhongMaterial({ color: 0x0000ff });
         var head = new THREE.Mesh(head_g, material_b);
-        head.position.set(0,1.2,0);//allの中心が原点になる
+        head.position.set(0,1.2,0);//allの中心が原点になる*/
 
         //体を作成
         var bodyGeometry = new THREE.SphereGeometry( 0.6, 32, 32 );
         var bodyMaterial = new THREE.MeshPhongMaterial({ color: 0xff7f00 });
         var body = new THREE.Mesh( bodyGeometry, bodyMaterial);
+        body.castShadow = true;
         body.scale.x =1.5;
         body.position.set(0,0,0);
 
@@ -82,14 +100,17 @@
         rleg.scale.y = 0.7;
         rleg.position.set(-0.3,-0.8,0.2);
     
-        /*左羽を作成
-        var win_g = new THREE.SphereGeometry( 0.7, 32, 32 );
-        var material_w = new THREE.MeshPhongMaterial({ color: 0x007777 });
-        var lwin = new THREE.Mesh( win_g, material_w);
-        lwin.scale.x = 0.2;
-        lwin.scale.z = 0.5;
-        lwin.rotation.z = 0.5;
-        lwin.position.set(0.65,0.15,0);*/
+        //盾を作成
+        var shield_g = new THREE.SphereGeometry( 0.7, 32, 32 );
+        var material_shield = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+        var shield = new THREE.Mesh( shield_g, material_shield);
+        shield.castShadow = true;
+        
+        shield.scale.x = 0.2;
+        //lwin.scale.z = 0.5;
+        shield.rotation.z = 0.7;
+        shield.rotation.x = 0.7;
+        shield.position.set(0.8,0.15,0);
 
         /*右羽を作成
         var rwin = new THREE.Mesh( win_g, material_w);
@@ -98,54 +119,90 @@
         rwin.rotation.z = -0.5;
         rwin.position.set(-0.65,0.15,0);*/
 
-        //くちばしの作成
-        var beak_g = new THREE.ConeGeometry( 0.6, 1, 64 );
-        var material_beak = new THREE.MeshStandardMaterial({ color: 0xff7f00 });
-        var beak = new THREE.Mesh( beak_g, material_beak);
-        beak.rotation.x = 0;
-        beak.position.set(0,0.55,0);
+        //角の作成
+        var drill_g = new THREE.ConeGeometry( 0.6, 1, 64 );
+        var material_drill = new THREE.MeshStandardMaterial({ color: 0xff7f00 });
+        var drill = new THREE.Mesh( drill_g, material_drill);
+        drill.rotation.x = 0;
+        drill.position.set(0,0.55,0);
+        drill.scale.z = 0.9;
+        drill.scale.x = 1.25;
+        drill.castShadow = true;
+
+        //口
+        var mouse_g = new THREE.TorusGeometry(0.25,0.05,16,32);
+        var material_mouse = new THREE.MeshStandardMaterial({color:0xfffff});
+        var mouse = new THREE.Mesh(mouse_g,material_mouse);
+        mouse.rotation.x = -0.8;
+        mouse.position.set(0,0,0.45);
+        mouse.castShadow = true;
 
         //左目
         var eye_g = new THREE.SphereGeometry( 0.15, 32, 32 );
         var material_eye = new THREE.MeshPhongMaterial({ color: 0xffffff });
         var l_eye = new THREE.Mesh( eye_g, material_eye);
-        l_eye.position.set(0.3,0.2,0.5);
+        l_eye.position.set(0.3,0.2,0.475);
 
         //右目
         var r_eye = new THREE.Mesh( eye_g, material_eye);
-        r_eye.position.set(-0.3,0.2,0.5);
+        r_eye.position.set(-0.3,0.2,0.475);
 
         //眼球
         var eye_m = new THREE.SphereGeometry( 0.08, 32, 32);
         var material_m = new THREE.MeshStandardMaterial({color: 0x000000});
         var lm_eye = new THREE.Mesh( eye_m, material_m);
-        lm_eye.position.set(0.31,0.22,0.6);
+        lm_eye.position.set(0.31,0.22,0.575);
 
         //みぎ眼球
         var rm_eye = new THREE.Mesh( eye_m, material_m);
-        rm_eye.position.set(-0.31,0.22,0.6);
+        rm_eye.position.set(-0.31,0.22,0.575);
 
-        //ペンギンのオブジェクト
-        const pengin = new THREE.Group();
-        //pengin.add(head); // 頭を追加
-        pengin.add(body); //体を追加
-        //pengin.add(lleg); //左足を追加
-        //pengin.add(rleg); //右足を追加
-        //pengin.add(lwin);  //左羽を追加
-        //pengin.add(rwin); //右羽を追加        
-        pengin.add(beak); //くちばし
-        pengin.add(l_eye); //左目
-        pengin.add(r_eye); //右目
+        //剣の刃
+        var haGeometry = new THREE.ConeGeometry(0.2,1,64);
+        var haMaterial = new THREE.MeshStandardMaterial({color:0x00ff7f});
+        var ha = new THREE.Mesh(haGeometry,haMaterial);
+        ha.position.set(-1,0.5,0);
+        ha.castShadow = true;
+        ha.scale.z= 0.5;
+        ha.rotation.x = -0.2;
+        ha.rotation.z = 0.2;
+        //剣の持ちて
+        var teGeometry = new THREE.CylinderGeometry(0.1,1,0.1,32);
+        var teMaterial = new THREE.MeshStandardMaterial({color:0xff0000});
+        var te = new THREE.Mesh(teGeometry,teMaterial);
+        te.position.set(-1,0,0);
+        te.castShadow = true;
 
-        pengin.add(lm_eye) ;
-        pengin.add(rm_eye);
-        pengin.position.set(0,1,0);//ペンギングループの原点の位置
-        scene.add(pengin);
+
+        //swordオブジェクト
+        const sword = new THREE.Group();
+        sword.add(ha);//刃を追加
+        sword.add(te);//持ちてを追加
+      
+      
+        //slimeのオブジェクト
+        const slime = new THREE.Group();
+        //slime.add(head); // 頭を追加
+        slime.add(body); //体を追加
+        //.add(lslimeleg); //左足を追加
+        //slime.add(rleg); //右足を追加
+        slime.add(shield);  //左羽を追加
+        slime.add(sword);//剣を追加       
+        slime.add(drill); //角
+        slime.add(mouse);//口
+        slime.add(l_eye); //左目
+        slime.add(r_eye); //右目
+
+        slime.add(lm_eye) ;
+        slime.add(rm_eye);
+        slime.position.set(0,1,0);//slimeグループの原点の位
+        slime.castShadow = true ;
+        scene.add(slime);
 
         //全体のオブジェクト
         const all = new THREE.Group();
         all.add(plane);//平面を追加
-        all.add(pengin); // ペンギンを追加
+        all.add(slime); // ペンギンを追加
         all.position.set(0,0,0);//全体グループの原点の位置
         scene.add(all); 
 
@@ -156,6 +213,8 @@
           // レンダリング
           renderer.render(scene, camera);
           requestAnimationFrame(update);
+
+          lightHelper.update();
 
 
           // ペンギンを回転させる
