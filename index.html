@@ -37,7 +37,7 @@
         directionalLight1.position.set(10, 10, 10);
         directionalLight1.castSlhadow = true;
         // シーンに追加
-        scene.add(directionalLight1);
+        //scene.add(directionalLight1);
 
         //スポットライト
         var light = new THREE.SpotLight(0xffffff, 1, 30, Math.PI / 6, 0, 0.5);
@@ -167,10 +167,13 @@
         ha.rotation.x = -0.2;
         ha.rotation.z = 0.2;
         //剣の持ちて
-        var teGeometry = new THREE.CylinderGeometry(0.1,1,0.1,32);
-        var teMaterial = new THREE.MeshStandardMaterial({color:0xff0000});
+        var teGeometry = new THREE.CylinderGeometry(0.1,0.1,0.4,32);
+        var teMaterial = new THREE.MeshStandardMaterial({color:0xff00ff});
         var te = new THREE.Mesh(teGeometry,teMaterial);
-        te.position.set(-1,0,0);
+        te.position.set(-0.9,0,0.1);
+        te.scale.z= 0.5;
+        te.rotation.x = -0.2;
+        te.rotation.z = 0.2;
         te.castShadow = true;
 
 
@@ -217,8 +220,12 @@
           lightHelper.update();
 
 
-          // ペンギンを回転させる
-          //pengin.rotation.y += 0.005;;
+          // スライムを回転させ        
+            slime.rotation.y += 0.005;
+            sword.rotation.x += 0.05;
+         
+         
+
 
           // 全体を回転させる
           //all.rotation.x += 0.01;
