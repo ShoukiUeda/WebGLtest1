@@ -72,6 +72,12 @@
         box.position.set(1.2,0,0);
         scene.add(sphere);
 
+        //円錐
+        var c_geometry = new THREE.ConeGeometry(0.5,20,32);
+        var cone = new THREE.Mesh(c_geometry,mat);
+        cone.position.set(2.2,0,0);
+        scene.add(cone);
+
 
         update();
 
