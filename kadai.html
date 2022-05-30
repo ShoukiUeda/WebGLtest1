@@ -73,9 +73,9 @@
         scene.add(sphere);
 
         //円錐
-        var c_geometry = new THREE.ConeGeometry(0.5,20,32);
+        var c_geometry = new THREE.ConeGeometry(0.5,1,32);
         var cone = new THREE.Mesh(c_geometry,mat);
-        cone.position.set(2.2,0,0);
+        cone.position.set(-1,0.2,0);
         scene.add(cone);
 
 
@@ -92,7 +92,7 @@
           box.rotation.y += 0.01;
           sphere.rotation.x += 0.01;
           sphere.rotation.y +=0.01;
-
+          cone.rotation.y += 0.01;
         }
       }
     </script>
