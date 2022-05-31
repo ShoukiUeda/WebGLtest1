@@ -48,9 +48,9 @@
 
         // helper
         const gridHelper = new THREE.GridHelper(2,10); // size, step
-        scene.add(gridHelper);
+        //scene.add(gridHelper);
         const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
-        scene.add(axisHelper);
+        //scene.add(axisHelper);
 
         // テクスチャー読み込み
         var textureLoader = new THREE.TextureLoader();  
@@ -105,10 +105,11 @@
         sphere.position.set(0,2,-10);
         scene.add(sphere);
         //earth
-        var e_geometry = new THREE.SphereGeometry(1.5,32,32);
+        var e_geometry = new THREE.SphereGeometry(1,32,32);
         var esphere = new THREE.Mesh(e_geometry,earth);
         esphere.position.set(1,1,3);
         esphere.rotation.y += 2;
+        esphere.rotation.x +=0.3;
         scene.add(esphere);
 
         //jupiter
@@ -118,9 +119,7 @@
         var jup_mat = new THREE.MeshStandardMaterial();
         jup_mat.map = jupiter;
 
-        var jbump = jupiter_L.load("jupiter.jpg");
-        jup_mat.jbump = jupiter;
-        jup_mat.bumpsccale = 0.2;
+       
 
         var j_geometry = new THREE.SphereGeometry(1.5,32,32);
         var jsphere = new THREE.Mesh(j_geometry,jup_mat);
@@ -152,13 +151,14 @@
           box.rotation.x += 0.01;
           box.rotation.y += 0.01;
          // sphere.rotation.x += 0.01;
-          sphere.rotation.y +=0.01;
+          sphere.rotation.y +=0.005;
           //cone.rotation.y += 0.02;
           cone.rotation.z -= 0.02;
           cone.rotation.x -= 0.02;
           cone2.rotation.z -= 0.02;
           cone2.rotation.x -= 0.02;
           jsphere.rotation.y += 0.01;
+          esphere.rotatoion.x += 0.01;
 
         }
       }
