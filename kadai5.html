@@ -11,7 +11,7 @@
 
       function init() {
         // サイズを指定
-        const width = 800
+        const width = 1000
         const height = 600;
 
         // レンダラーを作成
@@ -26,7 +26,7 @@
         // カメラを作成
         const camera = new THREE.PerspectiveCamera(60, width / height);
         // カメラの初期座標を設定
-        camera.position.set(0, 10, 15);
+        camera.position.set(10, 10, 30);
 
   
         
@@ -37,13 +37,13 @@
         const controls = new THREE.OrbitControls(camera, document.body); 
         
         // 平行光源1
-        var directionalLight1 = new THREE.SpotLight(0xff7f00,3,100,Math.PI/4,10,0.2);
-        directionalLight1.position.set(0, 2, -10);
+        var directionalLight1 = new THREE.PointLight(0xff7f00,5,50,1.0);
+        directionalLight1.position.set(0, 5, 0);
         // シーンに追加
         scene.add(directionalLight1);
         // 平行光源2
         var directionalLight2 = new THREE.DirectionalLight(0xffffff);
-        directionalLight2.position.set(10, 10, 0);
+        directionalLight2.position.set(100, 100, 0);
         // シーンに追加
         scene.add(directionalLight2);
 
@@ -53,10 +53,10 @@
         scene.add(directionalLight3);
 
         // helper
-        const gridHelper = new THREE.GridHelper(2,10); // size, step
-        //scene.add(gridHelper);
+        const gridHelper = new THREE.GridHelper(30,10); // size, step
+        scene.add(gridHelper);
         const axisHelper = new THREE.AxisHelper(2); //軸の長さ　X：赤、Y：緑、z：青
-        //scene.add(axisHelper);
+        scene.add(axisHelper);
 
         //☆テクスチャ
         var textureLoader_s = new THREE.TextureLoader();  
@@ -64,14 +64,14 @@
         const starmaterial = new THREE.SpriteMaterial({ map: texture_s,});
 
         // ☆を作成
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 500; i++) {
           const sprite = new THREE.Sprite(starmaterial);
           // ランダムな座標に配置
-          sprite.position.x = 20 * (Math.random() - 0.5);
-          sprite.position.y = 20 * Math.random() -0.5;
-          sprite.position.z = 20 * (Math.random() - 0.5);
+          sprite.position.x = 100 * (Math.random() - 0.5);
+          sprite.position.y = 100 * Math.random() -0.5;
+          sprite.position.z = 100 * (Math.random() - 0.5);
           // スケールを調整
-          let size = Math.random() * (0.2 - 0.05)+ 0.05;
+          let size = Math.random() * (0.5 - 0.05)+ 0.05;
           sprite.scale.set(size,size,size);
           scene.add(sprite);
         }
@@ -97,6 +97,55 @@
         mat2.bumpMap = bump2;
         mat2.bumpscale = 0.2;
 
+
+        //saturntexture
+        var saturntextureLoader = new THREE.TextureLoader();
+        var saturntexture = saturntextureLoader.load("img/saturn.jpg");
+        var saturnmaterial = new THREE.MeshPhongMaterial();
+        saturnmaterial.map = saturntexture;
+        var saturnbump = saturntextureLoader.load("img/saturn.jpg");
+        saturnmaterial.bumpMap = saturnbump;
+        saturnmaterial.bumpscale = 0.005;
+        //saturn ring texture
+        var saturnringTL = new THREE.TextureLoader();
+        var ringtexture = saturnringTL.load("img/saturnring.jpg");
+        var ringmaterial = new THREE.MeshPhongMaterial();
+        ringmaterial.map = ringtexture;
+
+        //saturn sphere
+        var saturn_geometry = new THREE.SphereGeometry(2,32,32);
+        var saturnsphere = new THREE.Mesh(saturn_geometry,saturnmaterial);
+        saturnsphere.position.set(0,7,22);
+        saturnsphere.rotation.y += 2;
+        saturnsphere.rotation.x +=0.3;
+        scene.add(saturnsphere);
+
+        //saturnring
+        var ring = new THREE.TorusGeometry(3,0.3,32,128);
+        var saturnring = new THREE.Mesh(ring,ringmaterial);
+        saturnring.position.set(0,7,22);
+        saturnring.rotation.y += 0;
+        saturnring.rotation.x += 1.8;
+        scene.add(saturnring);
+
+        //moontexture
+
+        var moontextureLoader = new THREE.TextureLoader();
+        var moontexture = moontextureLoader.load("img/moon.jpg");
+        var moon = new THREE.MeshPhongMaterial();
+        moon.map = moontexture;
+        var moonbump = moontextureLoader.load("img/moonbump.jpg");
+        moon.bumpMap = moonbump;
+        moon.bumpscale = 0.5;
+
+        //moon sphere
+        var moon_geometry = new THREE.SphereGeometry(0.35,32,32);
+        var moonsphere = new THREE.Mesh(moon_geometry,moon);
+        moonsphere.position.set(0,5,8);
+        moonsphere.rotation.y += 2;
+        moonsphere.rotation.x +=0.3;
+        scene.add(moonsphere);
+
         //suntexture
         var textureLoader3 = new THREE.TextureLoader();
         var texture3 = textureLoader3.load("img/sun.jpg");
@@ -113,7 +162,7 @@
         earth.map = etexture;
         var Ebump = textureLoader4.load("img/earth.png");
         earth.bumpMap =  Ebump;
-        earth.bumpscale = 0.005;
+        earth.bumpscale = 1;
 
         // 箱を作成
         var geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -126,13 +175,13 @@
         //sunを作成
         var s_geometry = new THREE.SphereGeometry(3,32,32);
         var sphere = new THREE.Mesh(s_geometry,mat3);
-        sphere.position.set(0,5,-10);
+        sphere.position.set(0,5,0);
         scene.add(sphere);
 
         //earth
-        var e_geometry = new THREE.SphereGeometry(1,32,32);
+        var e_geometry = new THREE.SphereGeometry(0.5,32,32);
         var esphere = new THREE.Mesh(e_geometry,earth);
-        esphere.position.set(1,4,3);
+        esphere.position.set(0,5,10);
         esphere.rotation.y += 2;
         esphere.rotation.x +=0.3;
         scene.add(esphere);
@@ -145,10 +194,10 @@
         jup_mat.map = jupiter;
 
        
-
+        //jupiter sphere
         var j_geometry = new THREE.SphereGeometry(1.5,32,32);
         var jsphere = new THREE.Mesh(j_geometry,jup_mat);
-        jsphere.position.set(-3,5,-5);
+        jsphere.position.set(0,6,15);
         jsphere.rotation.z = -0.2;
         scene.add(jsphere);
 
@@ -184,8 +233,9 @@
           cone2.rotation.x -= 0.02;
           jsphere.rotation.y += 0.01;
           esphere.rotation.y += 0.01;
-          star.rotation.y += 0.01;
-         
+          moonsphere.rotation.y += 0.01;
+          saturnsphere.rotation.y +=0.008;
+          saturnring.rotation. y= 0.08;
 
         }
       }
