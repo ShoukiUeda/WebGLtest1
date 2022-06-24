@@ -42,7 +42,7 @@
         scene.add(directionalLight2);
 
         var directionalLight3 = new THREE.DirectionalLight(0x888888);
-        directionalLight3.position.set(0, 0, 10);
+        directionalLight3.position.set(0, 0, 100);
         // シーンに追加
         scene.add(directionalLight3);
 
@@ -54,40 +54,40 @@
 
         // テクスチャー読み込み
         var textureLoader = new THREE.TextureLoader();  
-        var texture = textureLoader.load("stone3.jpg");
+        var texture = textureLoader.load("stone2.jpg");
         var mat = new THREE.MeshPhongMaterial();
         mat.map = texture;
   
         // バンプマップ読み込み(
-        var bump = textureLoader.load("stone3.jpg");
+        var bump = textureLoader.load("stone-bmp.jpg");
         mat.bumpMap = bump;
         mat.bumpscale = 0.05;
 
         //テクスチャ２
         var textureLoader2 = new THREE.TextureLoader();
-        var texture2 = textureLoader2.load("stone2.jpg");
+        var texture2 = textureLoader2.load("img/stone2.jpg");
         var mat2 = new THREE.MeshPhongMaterial();
         mat2.map = texture2;
 
-        var bump2 = textureLoader2.load("stone2.jpg");
+        var bump2 = textureLoader2.load("img/stone2.jpg");
         mat2.bumpMap = bump2;
         mat2.bumpscale = 0.2;
 
         //suntexture
         var textureLoader3 = new THREE.TextureLoader();
-        var texture3 = textureLoader3.load("sun.jpg");
+        var texture3 = textureLoader3.load("img/sun.jpg");
         var mat3 = new THREE.MeshPhongMaterial();
         mat3.map = texture3;
-        var bump3 = textureLoader3.load("sun.jpg");
+        var bump3 = textureLoader3.load("img/sun.jpg");
         mat3.bumpMap = bump3;
         mat3.bumpscale = 0.1;
         
         //earthtexture
         var textureLoader4 = new THREE.TextureLoader();
-        var etexture = textureLoader4.load("earth.jpg");
+        var etexture = textureLoader4.load("img/earth.png");
         var earth = new THREE.MeshStandardMaterial();
         earth.map = etexture;
-        var Ebump = textureLoader4.load("earth.jpg");
+        var Ebump = textureLoader4.load("img/earth.png");
         earth.bumpMap =  Ebump;
         earth.bumpscale = 0.005;
 
@@ -97,13 +97,13 @@
         //var box = new THREE.Mesh(geometry, material);
         var box = new THREE.Mesh(geometry, mat);
         box.position.set(1.2,0,0); //位置を指定
-        scene.add(box);   // シーンに追加
+        //scene.add(box);   // シーンに追加
 
         //球を作成
         var s_geometry = new THREE.SphereGeometry(3,32,32);
         var sphere = new THREE.Mesh(s_geometry,mat3);
         sphere.position.set(0,2,-10);
-        scene.add(sphere);
+        //scene.add(sphere);
         //earth
         var e_geometry = new THREE.SphereGeometry(1,32,32);
         var esphere = new THREE.Mesh(e_geometry,earth);
@@ -115,7 +115,7 @@
         //jupiter
         //texture
         var jupiter_L = new THREE.TextureLoader();
-        var jupiter = jupiter_L.load("jupiter.jpg");
+        var jupiter = jupiter_L.load("img/jupiter.jpg");
         var jup_mat = new THREE.MeshStandardMaterial();
         jup_mat.map = jupiter;
 
@@ -129,7 +129,7 @@
 
         //円錐
         var c_geometry = new THREE.ConeGeometry(0.5,1,32);
-        var cone = new THREE.Mesh(c_geometry,mat);
+        var cone = new THREE.Mesh(c_geometry,mat2);
         cone.position.set(-1,0.2,0);
         scene.add(cone);
         var cone2 = new THREE.Mesh(c_geometry,mat2);
