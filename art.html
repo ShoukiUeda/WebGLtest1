@@ -103,9 +103,11 @@
         //グループ
         var space1 = new THREE.Group();
         scene.add(space1);
+        space1.add(moonG);
 
-        var space2 = new THREE.Group();
-        scene.add(space2);
+        var moonG = new THREE.Group();
+        moonG.position.set(0,5,10);
+        scene.add(moonG);
 
         var space3 = new THREE.Group();
         scene.add(space3);
@@ -155,10 +157,10 @@
         //moon sphere
         var moon_geometry = new THREE.SphereGeometry(0.35,32,32);
         var moonsphere = new THREE.Mesh(moon_geometry,moon);
-        moonsphere.position.set(0,5,8);
+        moonsphere.position.set(2,0,0);
         moonsphere.rotation.y += 2;
         moonsphere.rotation.x +=0.3;
-        space2.add(moonsphere);
+        moonG.add(moonsphere);
 
         //suntexture
         var textureLoader3 = new THREE.TextureLoader();
@@ -209,7 +211,12 @@
         jsphere.rotation.z = -0.2;
         space3.add(jsphere);
 
-   
+        var rad = Math.PI*10;
+        var m = new THREE.MeshNormalMaterial();
+        var g = new THREE.SphereGeometry(2,30,30);
+        var me = new THREE.Mesh(g,m);
+        me.position.set(10*Math.cos(rad),5,10*Math.sin(rad));
+        moonG.add(me);
 
     
 
@@ -223,8 +230,10 @@
 
            
           space1.rotation.y += 0.003;
-          space2.rotation.y += 0.004;
-          space3.rotation.y += 0.0005;
+          moonG.rotation.y += 0.04;
+          space3.rotation.y += 0.001;
+
+       
 
           sphere.rotation.y +=0.005; //sun sphere
        
