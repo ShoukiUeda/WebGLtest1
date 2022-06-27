@@ -26,7 +26,7 @@
         // カメラを作成
         const camera = new THREE.PerspectiveCamera(60, width / height);
         // カメラの初期座標を設定
-        camera.position.set(10, 5, 30);
+        camera.position.set(140, 40, 140);
 
   
         
@@ -37,19 +37,19 @@
         const controls = new THREE.OrbitControls(camera, document.body); 
         
         // 平行光源1
-        var directionalLight1 = new THREE.PointLight(0xff7f00,5,50,1.0);
+        var directionalLight1 = new THREE.PointLight(0xffffff,3,500,1.0);
         directionalLight1.position.set(0, 5, 0);
         // シーンに追加
         scene.add(directionalLight1);
         // 平行光源2
-        var directionalLight2 = new THREE.DirectionalLight(0xffffff);
-        directionalLight2.position.set(100, 100, 0);
+        var directionalLight2 = new THREE.AmbientLight(0x999999);
+        directionalLight2.position.set(0, 100, 0);
         // シーンに追加
         scene.add(directionalLight2);
 
         var directionalLight3 = new THREE.HemisphereLight( 0xffffbb, 0x080820, 0.5 );
         directionalLight3.position.set(0, 50, 0);
-        scene.add(directionalLight3);
+        //scene.add(directionalLight3);
 
         var directionalLight4= new THREE.DirectionalLight(0xffffff);
         directionalLight4.position.set(0, -50, 0);
@@ -67,12 +67,12 @@
         const starmaterial = new THREE.SpriteMaterial({ map: texture_s,});
 
         // ☆を作成
-        for (let i = 0; i < 1500; i++) {
+        for (let i = 0; i < 5000; i++) {
           const sprite = new THREE.Sprite(starmaterial);
           // ランダムな座標に配置
-          sprite.position.x = 100 * (Math.random() - 0.5);
-          sprite.position.y = 100 * Math.random() -0.5;
-          sprite.position.z = 100 * (Math.random() - 0.5);
+          sprite.position.x = 500 * (Math.random() - 0.5);
+          sprite.position.y = 500 * (Math.random() -0.5);
+          sprite.position.z = 500 * (Math.random() - 0.5);
           // スケールを調整
           let size = Math.random() * (0.2 - 0.005)+ 0.05;
           sprite.scale.set(size,size,size);
@@ -101,16 +101,20 @@
         mat2.bumpscale = 0.2;*/
 
         //グループ
-        var space1 = new THREE.Group();
-        scene.add(space1);
-        space1.add(moonG);
-
-        var moonG = new THREE.Group();
-        moonG.position.set(0,5,10);
-        scene.add(moonG);
-
-        var space3 = new THREE.Group();
-        scene.add(space3);
+    
+        var mercury_r= new THREE.Group();
+        scene.add(mercury_r);
+        var venus_r= new THREE.Group();
+        scene.add(venus_r);
+        var earth_r= new THREE.Group();
+        scene.add(earth_r);
+        var mars_r= new THREE.Group();
+        scene.add(mars_r);
+        var jupiter_r= new THREE.Group();
+        scene.add(jupiter_r);
+        var saturn_r= new THREE.Group();
+        scene.add(saturn_r);
+        
 
         //saturntexture
         var saturntextureLoader = new THREE.TextureLoader();
@@ -128,120 +132,120 @@
         ringmaterial.map = ringtexture;
 
         //saturn sphere
-        var saturn_geometry = new THREE.SphereGeometry(2,32,32);
+        var saturn_geometry = new THREE.SphereGeometry(3.6,32,32);
         var saturnsphere = new THREE.Mesh(saturn_geometry,saturnmaterial);
         var saturn_material = new THREE.MeshStandardMaterial({color:0xffffff});
-        saturnsphere.position.set(0,7,22);
+        saturnsphere.position.set(0,7,120);
         saturnsphere.rotation.y += 2;
         saturnsphere.rotation.x +=0.3;
-        space3.add(saturnsphere);
+        saturn_r.add(saturnsphere);
 
         //saturnring
-        var ring = new THREE.TorusGeometry(3,0.5,32,128);
+        var ring = new THREE.TorusGeometry(6,0.5,32,128);
         var saturnring = new THREE.Mesh(ring,ringmaterial);
-        saturnring.position.set(0,7,22);
+        saturnring.position.set(0,7,120);
         saturnring.rotation.y += 0;
         saturnring.rotation.x += 1.8;
-        space3.add(saturnring);
+        saturn_r.add(saturnring);
 
-        //moontexture
-
-        var moontextureLoader = new THREE.TextureLoader();
-        var moontexture = moontextureLoader.load("img/moon.jpg");
-        var moon = new THREE.MeshPhongMaterial();
-        moon.map = moontexture;
-        var moonbump = moontextureLoader.load("img/moonbump.jpg");
-        moon.bumpMap = moonbump;
-        moon.bumpscale = 0.5;
-
-        //moon sphere
-        var moon_geometry = new THREE.SphereGeometry(0.35,32,32);
-        var moonsphere = new THREE.Mesh(moon_geometry,moon);
-        moonsphere.position.set(2,0,0);
-        moonsphere.rotation.y += 2;
-        moonsphere.rotation.x +=0.3;
-        moonG.add(moonsphere);
+      
 
         //suntexture
         var textureLoader3 = new THREE.TextureLoader();
         var texture3 = textureLoader3.load("img/sun.jpg");
         var mat3 = new THREE.MeshPhongMaterial();
         mat3.map = texture3;
-        var bump3 = textureLoader3.load("img/sun.jpg");
-        mat3.bumpMap = bump3;
-        mat3.bumpscale = 0.1;
-        
-        //earthtexture
-        var textureLoader4 = new THREE.TextureLoader();
-        var etexture = textureLoader4.load("img/earth.png");
-        var earth = new THREE.MeshStandardMaterial();
-        earth.map = etexture;
-        var Ebump = textureLoader4.load("img/earth.png");
-        earth.bumpMap =  Ebump;
-        earth.bumpscale = 1;
-
-        
-
         //sunを作成
-        var s_geometry = new THREE.SphereGeometry(3,32,32);
+        var s_geometry = new THREE.SphereGeometry(10,32,32);
         var sphere = new THREE.Mesh(s_geometry,mat3);
         sphere.position.set(0,5,0);
         scene.add(sphere);
 
-        //earth
-        var e_geometry = new THREE.SphereGeometry(0.5,32,32);
-        var esphere = new THREE.Mesh(e_geometry,earth);
-        esphere.position.set(0,5,10);
-        esphere.rotation.y += 2;
-        esphere.rotation.x +=0.3;
-        space1.add(esphere);
+      
 
-        //jupiter
-        //texture
-        var jupiter_L = new THREE.TextureLoader();
-        var jupiter = jupiter_L.load("img/jupiter.jpg");
-        var jup_mat = new THREE.MeshStandardMaterial();
-        jup_mat.map = jupiter;
+      
+  
+        //水星
+        var mercury_g = new THREE.SphereGeometry(1,32,32);
+        var mercury_l = new THREE.TextureLoader();
+        var mercury_Load = mercury_l.load("img/mercury.jpg");
+        var mercury_m = new THREE.MeshStandardMaterial();
+        mercury_m.map = mercury_Load;
+        var mercury = new THREE.Mesh(mercury_g,mercury_m);
+        mercury.position.set(0,5,20);
+        mercury_r.add(mercury);
 
-       
-        //jupiter sphere
-        var j_geometry = new THREE.SphereGeometry(1.5,32,32);
-        var jsphere = new THREE.Mesh(j_geometry,jup_mat);
-        jsphere.position.set(0,6,15);
-        jsphere.rotation.z = -0.2;
-        space3.add(jsphere);
+        //金星
+        var venus_g = new THREE.SphereGeometry(2,32,32);
+        var venus_l = new THREE.TextureLoader();
+        var venus_Load = mercury_l.load("img/venus.jpg");
+        var venus_m = new THREE.MeshStandardMaterial();
+        venus_m.map = venus_Load;
+        var venus = new THREE.Mesh(venus_g,venus_m);
+        venus.position.set(0,5,40);
+        venus_r.add(venus);
 
-        var rad = Math.PI*10;
-        var m = new THREE.MeshNormalMaterial();
-        var g = new THREE.SphereGeometry(2,30,30);
-        var me = new THREE.Mesh(g,m);
-        me.position.set(10*Math.cos(rad),5,10*Math.sin(rad));
-        moonG.add(me);
+        //地球
+        var earth_g = new THREE.SphereGeometry(2.6,32,32);
+        var earth_l = new THREE.TextureLoader();
+        var earth_Load = earth_l.load("img/earth.png");
+        var earth_m = new THREE.MeshStandardMaterial();
+        earth_m.map = earth_Load;
+        var earth = new THREE.Mesh(earth_g,earth_m);
+        earth.rotation.y += 2;
+        earth.rotation.x +=0.3;
+        earth.position.set(0,5,60);
+        earth_r.add(earth);
 
+        //火星
+        var mars_g = new THREE.SphereGeometry(1.4,32,32);
+        var mars_l = new THREE.TextureLoader();
+        var mars_Load = mercury_l.load("img/mars.jpg");
+        var mars_m = new THREE.MeshStandardMaterial();
+        mars_m.map = mars_Load;
+        var mars = new THREE.Mesh(mars_g,mars_m);
+        mars.position.set(0,5,80);
+        mars_r.add(mars);
+
+        //木星
+        var jupiter_g = new THREE.SphereGeometry(6,32,32);
+        var jupiter_l = new THREE.TextureLoader();
+        var jupiter_Load = mercury_l.load("img/jupiter.jpg");
+        var jupiter_m = new THREE.MeshStandardMaterial();
+        jupiter_m.map =jupiter_Load;
+        var jupiter = new THREE.Mesh(jupiter_g,jupiter_m);
+        jupiter.position.set(0,5,100);
+        jupiter_r.add(jupiter);
+
+
+        
+        
     
 
         update();
 
         // 毎フレーム時に実行されるループイベントです
         function update() {
+
           // レンダリング
           renderer.render(scene, camera);
           requestAnimationFrame(update);
 
-           
-          space1.rotation.y += 0.003;
-          moonG.rotation.y += 0.04;
-          space3.rotation.y += 0.001;
+          sphere.rotation.y += 0.01;
+          mercury_r.rotation.y += 0.05;
+          venus_r.rotation.y += 0.01;
+          earth_r.rotation.y += 0.005;
+          mars_r.rotation.y += 0.02;
+          jupiter_r.rotation.y += 0.03;
+          saturn_r.rotation.y += 0.04;
+         
+       
+          
+        
+       
+          
 
        
-
-          sphere.rotation.y +=0.005; //sun sphere
-       
-          jsphere.rotation.y += 0.01;
-          esphere.rotation.y += 0.01;
-          moonsphere.rotation.y += 0.01;
-          saturnsphere.rotation.y +=0.008;
-          saturnring.rotation. y= 0.08;
 
         }
       }
@@ -249,6 +253,5 @@
     <h1>第５回課題</h1>
     <h2>タイトル：うちゅ</h2>
     ビルボードを使って☆をつくった<br>
-    サイズもランダムにした
 </body>
 </html>
