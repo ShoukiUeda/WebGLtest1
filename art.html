@@ -1,6 +1,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="art.css">
     <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
     <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
   </head>
@@ -11,7 +12,7 @@
 
       function init() {
         // サイズを指定
-        const width = 1000
+        const width = 800
         const height = 600;
 
         // レンダラーを作成
@@ -26,7 +27,7 @@
         // カメラを作成
         const camera = new THREE.PerspectiveCamera(60, width / height);
         // カメラの初期座標を設定
-        camera.position.set(140, 40, 140);
+        camera.position.set(140, 35, 200);
 
   
         
@@ -37,7 +38,7 @@
         const controls = new THREE.OrbitControls(camera, document.body); 
         
         // 平行光源1
-        var directionalLight1 = new THREE.PointLight(0xffffff,3,500,1.0);
+        var directionalLight1 = new THREE.PointLight(0xffffff,3,500,0.1);
         directionalLight1.position.set(0, 5, 0);
         // シーンに追加
         scene.add(directionalLight1);
@@ -114,6 +115,8 @@
         scene.add(jupiter_r);
         var saturn_r= new THREE.Group();
         scene.add(saturn_r);
+        var uranus_r = new THREE.Group();
+        scene.add(uranus_r);
         
 
         //saturntexture
@@ -156,7 +159,7 @@
         var mat3 = new THREE.MeshPhongMaterial();
         mat3.map = texture3;
         //sunを作成
-        var s_geometry = new THREE.SphereGeometry(10,32,32);
+        var s_geometry = new THREE.SphereGeometry(25,32,32);
         var sphere = new THREE.Mesh(s_geometry,mat3);
         sphere.position.set(0,5,0);
         scene.add(sphere);
@@ -166,17 +169,17 @@
       
   
         //水星
-        var mercury_g = new THREE.SphereGeometry(1,32,32);
+        var mercury_g = new THREE.SphereGeometry(0.5,32,32);
         var mercury_l = new THREE.TextureLoader();
         var mercury_Load = mercury_l.load("img/mercury.jpg");
         var mercury_m = new THREE.MeshStandardMaterial();
         mercury_m.map = mercury_Load;
         var mercury = new THREE.Mesh(mercury_g,mercury_m);
-        mercury.position.set(0,5,20);
+        mercury.position.set(0,5,30);
         mercury_r.add(mercury);
 
         //金星
-        var venus_g = new THREE.SphereGeometry(2,32,32);
+        var venus_g = new THREE.SphereGeometry(1,32,32);
         var venus_l = new THREE.TextureLoader();
         var venus_Load = mercury_l.load("img/venus.jpg");
         var venus_m = new THREE.MeshStandardMaterial();
@@ -186,7 +189,7 @@
         venus_r.add(venus);
 
         //地球
-        var earth_g = new THREE.SphereGeometry(2.6,32,32);
+        var earth_g = new THREE.SphereGeometry(1,32,32);
         var earth_l = new THREE.TextureLoader();
         var earth_Load = earth_l.load("img/earth.png");
         var earth_m = new THREE.MeshStandardMaterial();
@@ -194,21 +197,21 @@
         var earth = new THREE.Mesh(earth_g,earth_m);
         earth.rotation.y += 2;
         earth.rotation.x +=0.3;
-        earth.position.set(0,5,60);
+        earth.position.set(0,5,50);
         earth_r.add(earth);
 
         //火星
-        var mars_g = new THREE.SphereGeometry(1.4,32,32);
+        var mars_g = new THREE.SphereGeometry(0.75,32,32);
         var mars_l = new THREE.TextureLoader();
         var mars_Load = mercury_l.load("img/mars.jpg");
         var mars_m = new THREE.MeshStandardMaterial();
         mars_m.map = mars_Load;
         var mars = new THREE.Mesh(mars_g,mars_m);
-        mars.position.set(0,5,80);
+        mars.position.set(0,5,75);
         mars_r.add(mars);
 
         //木星
-        var jupiter_g = new THREE.SphereGeometry(6,32,32);
+        var jupiter_g = new THREE.SphereGeometry(5,32,32);
         var jupiter_l = new THREE.TextureLoader();
         var jupiter_Load = mercury_l.load("img/jupiter.jpg");
         var jupiter_m = new THREE.MeshStandardMaterial();
@@ -216,6 +219,17 @@
         var jupiter = new THREE.Mesh(jupiter_g,jupiter_m);
         jupiter.position.set(0,5,100);
         jupiter_r.add(jupiter);
+
+        //天王星
+        var uranus_g = new THREE.SphereGeometry(2.5,32,32);
+        var uranus_l = new THREE.TextureLoader();
+        var uranus_Load = mercury_l.load("img/uranus.jpg");
+        var uranus_m = new THREE.MeshStandardMaterial();
+        uranus_m.map =uranus_Load;
+        var uranus = new THREE.Mesh(uranus_g,uranus_m);
+        uranus.position.set(0,5,200);
+        uranus_r.add(uranus);
+
 
 
         
@@ -231,6 +245,7 @@
           renderer.render(scene, camera);
           requestAnimationFrame(update);
 
+          //公転
           sphere.rotation.y += 0.01;
           mercury_r.rotation.y += 0.05;
           venus_r.rotation.y += 0.01;
@@ -238,6 +253,16 @@
           mars_r.rotation.y += 0.02;
           jupiter_r.rotation.y += 0.03;
           saturn_r.rotation.y += 0.04;
+          uranus_r.rotation.y += 0.05;
+
+          //自転
+          mercury.rotation.y += 0.0001;
+          venus.rotation.y += 0.0001;
+          earth.rotation.y += 0.1;
+          marsy.rotation.y += 0.095;
+          jupiter.rotation.y += 0.27;
+          saturn.rotation.y += 0.23;
+          uranus.rotation.x += 0.15;
          
        
           
@@ -250,8 +275,21 @@
         }
       }
     </script>
-    <h1>第５回課題</h1>
-    <h2>タイトル：うちゅ</h2>
-    ビルボードを使って☆をつくった<br>
+    <h1>最終課題</h1>
+    <h2>タイトル：太陽系</h2>
+    <h3>工夫した点</h2>
+    <ul>
+    <li>全体に環境光源をあてて見やすくした。</li>
+    <li>公転と自転と大きさを現実のものに近づけた。</li>
+    <li>太陽から点光源をだして太陽光を再現した。</li>
+    
+    </ul>
+    <h3>参考文献</h3>
+    <ul>
+    <li>自転する太陽系８惑星を比較した動画が面白い！横倒しや逆回転も(https://sorae.info/030201/2019_5_23_solar_system.html)</li>
+    <li>Relative orbital velocities – planet motions, rotations and tilts to scale(https://youtu.be/F4h2h0RhaMI)</li>
+   </ul>
+   <a href="index.html">戻る
+    
 </body>
 </html>
